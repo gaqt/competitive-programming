@@ -1,0 +1,53 @@
+/*
+My personal codeforces CSS skin
+(normal colors are too bright for me)
+Use it with stylebot or something
+*/
+
+html body {
+  font-family: monospace;
+  background-color: #876ea7;
+}
+
+.roundbox,
+.second-level-menu-list,
+#pageContent > * {
+  background-color: #d5a6bd;
+}
+
+div.bottom-links {
+  background-color: #ead1dc;
+}
+
+td.dark, th {
+  background-color: #d5a6bd;
+}
+
+td:not(.dark) {
+  background-color: #ead1dc;
+}
+
+rect.day {
+  background-color: #ead1dc;
+  fill-opacity: 60%;
+}
+
+.backLava {
+  display: none;
+}
+
+.second-level-menu-list a {
+  color: #855a85
+}
+
+a:visited :not(.rated-user) {
+  color: #752a75
+}
+
+#header img {
+  opacity: 50%;
+}
+
+.problem-statement {
+  padding: 2rem 1rem 1rem 1rem
+}
