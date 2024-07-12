@@ -12,6 +12,8 @@
     #endif
 #endif
 #ifdef __clang__
+    #include <cstdio>
+    #include <ostream>
     #include <cstdint>
     #include <iostream>
     #include <map>
@@ -32,13 +34,14 @@ typedef pair<ll,ll> pii;
 typedef pair<ld,ld> pdd;
 #define x first
 #define y second
-#define psb push_back
+#define pb push_back
 #define ppb pop_back
 #define ins insert
 #define bg begin
 #define all(a) (a).begin(), (a).end()
 #define sz(a) ((a).size())
-#define mkp make_pair
+#define len(a) ((a).length())
+#define mp make_pair
 #define INF LONG_MAX
 #define PI 3.1415926535897932384626433832795l
 #define MOD 1000000007ll
@@ -50,25 +53,24 @@ typedef pair<ld,ld> pdd;
 #define MAX7 11234567ll
 #define MAX8 112345678ll
 #define MAX9 1123456789ll
-#define FORI(n) for(ll i=0;i<(n);i++)
-#define FORI1(n) for(ll i=1;i<(n);i++)
-#define FORJ(n) for(ll j=0;j<(n);j++)
-#define FORJ1(n) for(ll j=1;j<(n);j++)
-#define FORH(n) for(ll h=0;h<(n);h++)
-#define FORH1(n) for(ll h=1;h<(n);h++)
-#define FORK(n) for(ll k=0;k<(n);k++)
-#define FORK1(n) for(ll k=1;k<(n);k++)
-#define FOR0(k,n) for(ll k=0;k<(n);k++)
-#define FOR1(k,n) for(ll k=1;k<(n);k++)
-#define BIT_INV(a) (a^1)
-#define BIT_FLIP(a,b) ((a)^=(1ull)<<(b))
-#define BIT_SET(a,b) ((a)|=(1ull)<<(b))
-#define BIT_CLEAR(a,b) ((a)&=~(1ull)<<(b))
-#define BIT_CHECK(a,b) (!!((a)&(1ull<<(b))))
-ld distE(pdd a, pdd b) {return sqrt(pow(a.x-b.x,2)+pow(a.y-b.y,2));}
-ld distM(pdd a, pdd b) {return abs(a.x-b.x)+abs(a.y-b.y);}
-ld distE(pii a, pii b) {return sqrt(pow(a.x-b.x,2)+pow(a.y-b.y,2));}
-ll distM(pii a, pii b) {return abs(a.x-b.x)+abs(a.y-b.y);}
+#define fori(n) for(ll i=0;i<(n);i++)
+#define fori1(n) for(ll i=1;i<(n);i++)
+#define forj(n) for(ll j=0;j<(n);j++)
+#define forj1(n) for(ll j=1;j<(n);j++)
+#define forh(n) for(ll h=0;h<(n);h++)
+#define forh1(n) for(ll h=1;h<(n);h++)
+#define fork(n) for(ll k=0;k<(n);k++)
+#define fork1(n) for(ll k=1;k<(n);k++)
+#define for0(k,n) for(ll (k)=0;(k)<(n);(k)++)
+#define for1(k,n) for(ll (k)=1;(k)<(n);(k)++)
+#define bflip(a,b) ((a)^=(1ull)<<(b))
+#define bset(a,b) ((a)|=(1ull)<<(b))
+#define bclear(a,b) ((a)&=~(1ull)<<(b))
+#define bcheck(a,b) (!!((a)&(1ull<<(b))))
+ld diste(pdd a, pdd b) {return sqrt(pow(a.x-b.x,2)+pow(a.y-b.y,2));}
+ld distm(pdd a, pdd b) {return abs(a.x-b.x)+abs(a.y-b.y);}
+ld diste(pii a, pii b) {return sqrt(pow(a.x-b.x,2)+pow(a.y-b.y,2));}
+ll distm(pii a, pii b) {return abs(a.x-b.x)+abs(a.y-b.y);}
 template<typename T> T gcd(T a,T b){return(b?__gcd(a,b):a);}
 template<typename T> T lcm(T a,T b){return(a*(b/gcd(a,b)));}
 void extended_gcd(ll a, ll b, ll* x, ll* y) {
