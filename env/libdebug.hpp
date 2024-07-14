@@ -1,11 +1,12 @@
-#include <unordered_map>
-#include <unordered_set>
 #pragma GCC diagnostic ignored "-Wc++11-extensions"
 
 #include <vector>
+#include <array>
 #include <iostream>
 #include <string>
 #include <set>
+#include <unordered_map>
+#include <unordered_set>
 using namespace std;
 
 string to_string(const string &s) {
@@ -30,6 +31,16 @@ string to_string(pair<A, B> p) {
 
 template<typename T>
 string to_string(const vector<T> &v) {
+    string s = "[ ";
+    for (const T &x: v) {
+        s += to_string(x) + ", ";
+    }
+    s += "]";
+    return s;
+}
+
+template<typename T, size_t N>
+string to_string(const array<T, N> &v) {
     string s = "[ ";
     for (const T &x: v) {
         s += to_string(x) + ", ";
@@ -98,3 +109,4 @@ string to_string(const unordered_map<Key, T, KeyEqual, Allocator> &v) {
 }
 
 #define debug(x) cout << #x << ": " << to_string(x) << "\n";
+#define debugarr(x, n) cout << #x << ": " << to_string(x, n) << "\n";

@@ -10,19 +10,26 @@
     #ifdef __x86_64__
         #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
     #endif
+    #define debug(x) ;
+    #define debugarr(x,n) ;
 #endif
 #ifdef __clang__
     #include <cstdio>
     #include <ostream>
     #include <cstdint>
+    #include <climits>
     #include <iostream>
     #include <map>
     #include <unordered_map>
     #include <set>
     #include <unordered_set>
     #include <vector>
+    #include <queue>
     #include <deque>
     #include <algorithm>
+    #include <numeric>
+    #include <functional>
+    #include <iomanip>
 #else
     #include <bits/stdc++.h>
 #endif
@@ -38,41 +45,32 @@ typedef pair<ld,ld> pdd;
 #define ppb pop_back
 #define ins insert
 #define bg begin
-#define all(a) (a).begin(), (a).end()
+#define all(a) begin(a), end(a)
 #define sz(a) ((a).size())
 #define len(a) ((a).length())
 #define mp make_pair
-#define INF LONG_MAX
+#define INF LLONG_MAX
 #define PI 3.1415926535897932384626433832795l
 #define MOD 1000000007ll
-#define MAX2 112ll
-#define MAX3 1123ll
-#define MAX4 11234ll
-#define MAX5 112345ll
-#define MAX6 1123456ll
-#define MAX7 11234567ll
-#define MAX8 112345678ll
-#define MAX9 1123456789ll
-#define fori(n) for(ll i=0;i<(n);i++)
-#define fori1(n) for(ll i=1;i<(n);i++)
-#define forj(n) for(ll j=0;j<(n);j++)
-#define forj1(n) for(ll j=1;j<(n);j++)
-#define forh(n) for(ll h=0;h<(n);h++)
-#define forh1(n) for(ll h=1;h<(n);h++)
-#define fork(n) for(ll k=0;k<(n);k++)
-#define fork1(n) for(ll k=1;k<(n);k++)
-#define for0(k,n) for(ll (k)=0;(k)<(n);(k)++)
-#define for1(k,n) for(ll (k)=1;(k)<(n);(k)++)
+#define FORI(x,n) for(ll i=(x);i<(n);i++)
+#define FORJ(x,n) for(ll j=(x);j<(n);j++)
+#define FORH(x,n) for(ll h=(x);h<(n);h++)
+#define FORK(x,n) for(ll k=(x);k<(n);k++)
+#define FORL(x,n) for(ll l=(x);l<(n);l++)
+#define FORR(x,n) for(ll r=(x);r<(n);r++)
+#define FOR(k,x,n) for(ll (k)=(x);(k)<(n);(k)++)
 #define bflip(a,b) ((a)^=(1ull)<<(b))
 #define bset(a,b) ((a)|=(1ull)<<(b))
 #define bclear(a,b) ((a)&=~(1ull)<<(b))
 #define bcheck(a,b) (!!((a)&(1ull<<(b))))
-ld diste(pdd a, pdd b) {return sqrt(pow(a.x-b.x,2)+pow(a.y-b.y,2));}
-ld distm(pdd a, pdd b) {return abs(a.x-b.x)+abs(a.y-b.y);}
-ld diste(pii a, pii b) {return sqrt(pow(a.x-b.x,2)+pow(a.y-b.y,2));}
-ll distm(pii a, pii b) {return abs(a.x-b.x)+abs(a.y-b.y);}
-template<typename T> T gcd(T a,T b){return(b?__gcd(a,b):a);}
-template<typename T> T lcm(T a,T b){return(a*(b/gcd(a,b)));}
+void yes() {cout << "YES" << "\n";}
+void no() {cout << "NO" << "\n";}
+__attribute__ ((const)) ld diste(const pdd a,const pdd b) {return sqrt(pow(a.x-b.x,2)+pow(a.y-b.y,2));}
+__attribute__ ((const)) ld distm(const pdd a,const pdd b) {return abs(a.x-b.x)+abs(a.y-b.y);}
+__attribute__ ((const)) ld diste(const pii a,const pii b) {return sqrt(pow(a.x-b.x,2)+pow(a.y-b.y,2));}
+__attribute__ ((const)) ll distm(const pii a,const pii b) {return abs(a.x-b.x)+abs(a.y-b.y);}
+template<typename T> __attribute__ ((const)) T gcd(const T a,const T b){return(b?__gcd(a,b):a);}
+template<typename T> __attribute__ ((const)) T lcm(const T a,const T b){return(a*(b/gcd(a,b)));}
 void extended_gcd(ll a, ll b, ll* x, ll* y) {
     if (a == 0) {
         *x = 0;
@@ -84,7 +82,7 @@ void extended_gcd(ll a, ll b, ll* x, ll* y) {
     *x = y_ - x_*(b/a);
     *y = x_;
 }
-ll mod_inv(ll a, ll m) {
+__attribute__ ((const)) ll mod_inv(const ll a, const ll m) {
 	ll x, y;
     extended_gcd(a, m, &x, &y);
     x = (1 - y*m) / a;
@@ -94,7 +92,25 @@ ll mod_inv(ll a, ll m) {
         return x % m;
     }
 }
-ll ipow(ll b, ll e) {
+__attribute__ ((const)) const array<array<ll,63>,20> gen_ipow() {
+    array<array<ll,63>,20> arr;
+    fill(arr[0].begin(), arr[0].end(), 0ll);
+    fill(arr[1].begin(), arr[1].end(), 1ll);
+
+    for (ll i = 2; i <= arr.size(); i++) {
+        ll acc = 1;
+        arr[i][0] = 1;
+        for (ll j = 1; LLONG_MAX / acc >= i; j++) {
+            acc *= i;
+            arr[i][j] = acc;
+        }
+    }
+
+    return arr;
+}
+static const array<array<ll,63>,20> _ipow = gen_ipow();
+__attribute__ ((pure)) ll ipow(ll b, ll e) {
+    if (b < _ipow.size()) return _ipow[b][e];
     ll r = 1;
     while (e) {
         if (e & 1) r *= b;
@@ -102,7 +118,7 @@ ll ipow(ll b, ll e) {
     }
     return r;
 }
-pair<vector<int>, vector<bool> > get_primes(const ll n) {
+__attribute__ ((const)) pair<vector<int>, vector<bool> > get_primes(const ll n) {
     vector<bool> sieve(n+1, true);
     vector<int> primes;
     primes.reserve(1.1l*n/log((ld)n));
@@ -116,7 +132,7 @@ pair<vector<int>, vector<bool> > get_primes(const ll n) {
     }
     return make_pair(primes, sieve);
 }
-vector<int> prime_dcmp(const ll x, const vector<int> primes) {
+__attribute__ ((const)) vector<int> prime_dcmp(const ll x, const vector<int> &primes) {
     vector<int> dcmp;
     int max_p = 1+sqrt(x);
     for (int p: primes) {
@@ -162,25 +178,29 @@ int inversions(T arr[], const int l, const int r) {
 //     SOLUTION GOES HERE
 //----------------------------------------------------------------------------------
 
-void _preprocess_() {
+/* <--- Notes --->
 
-}
+*/
 
+void _preprocess_() {}
 
-void _solve_() {
+void _solve_test_case_() {
 
 }
 
 #define USE_TEST_CASES
 
 int main() {
-	_preprocess_();
-	#ifdef USE_TEST_CASES
-		int test_cases;
-		scanf("%d", &test_cases);
-		while (test_cases--) _solve_();
-	#else
-		_solve_();
-	#endif
-	return 0;
+    cin.tie(NULL)->sync_with_stdio(false);
+    _preprocess_();
+    #ifdef USE_TEST_CASES
+        int tt;
+        cin >> tt;
+        while (tt--) {
+            _solve_test_case_();
+        }
+    #else
+        _solve_test_case_();
+    #endif
+    return 0;
 }
