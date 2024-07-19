@@ -1,10 +1,10 @@
 // author: logemi
 
 #pragma GCC diagnostic ignored "-Wc++11-extensions"
-#pragma GCC diagnostic ignored "-Wdeprecated-register"
+#pragma GCC diagnostic ignored "-Wc++17-extensions"
 #ifdef __DEBUG__
     #pragma GCC optimize("O0,trapv")
-    #include "../libdebug.hpp"
+    #include "../libdebug.cpp"
 #else
     #pragma GCC optimize("O3,unroll-loops")
     #ifdef __x86_64__
@@ -140,11 +140,11 @@ __attribute__ ((const)) pair<vector<T>, vector<bool> > get_primes(const ll n) {
     primes.reserve(1.1l*n/log((ld)n));
     sieve[0] = false;
     sieve[1] = false;
-    for (register int i = 2; i < n+1; i++) {
+    for (int i = 2; i < n+1; i++) {
         if (!sieve[i]) continue;
         sieve[i] = true;
         primes.push_back(i);
-        for (register int x = 2*i; x < n+1; x += i) sieve[x] = false;
+        for (int x = 2*i; x < n+1; x += i) sieve[x] = false;
     }
     return make_pair(primes, sieve);
 }
@@ -168,7 +168,7 @@ int inversions(T arr[], const int l, const int r) {
     T left[szl], right[szr];
     memcpy(left, arr+l, szl*sizeof(T));
     memcpy(right, arr+mid, szr*sizeof(T));
-    register int x = 0, y = 0, i = l;
+    int x = 0, y = 0, i = l;
     Compare cmp;
     while (x < szl && y < szr) {
         if (cmp(left[x], right[y])) {

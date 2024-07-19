@@ -24,12 +24,15 @@ template<> bool use_pad<char[]> = true;
 template<> bool use_pad<char*> = true;
 template<class T> bool use_pad<vector<T> > = true;
 template<class T, size_t N> bool use_pad<array<T,N> > = true;
-template<class T> bool use_pad<set<T> > = true;
-template<class T> bool use_pad<unordered_set<T> > = true;
 template<class K, class V, class C, class A>
 bool use_pad<map<K,V,C,A> > = true;
 template<class K, class V, class C, class A>
 bool use_pad<unordered_map<K,V,C,A> > = true;
+
+template<class T> bool use_pad<set<T> > = use_pad<T>;
+template<class T> bool use_pad<unordered_set<T> > = use_pad<T>;
+template<class A, class B>
+bool use_pad<pair<A,B> > = use_pad<A> || use_pad<B>;
 
 string to_string(const string &s, string pad) {
     return "\"" + s + "\"";
@@ -60,12 +63,16 @@ string to_string(const size_t x, string pad) {
 
 template<typename A, typename B>
 string to_string(pair<A, B> p, string pad) {
+    if (!use_pad<pair<A,B> >) {
+        return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";
+    }
+
     string s = "\n";
 
-    s += pad + "  ( x: ";
-    s += to_string(p.first, pad+"    ") + "\n";
-    s += pad + "  ( y: ";
-    s += to_string(p.second, pad+"    ") + "\n";
+    s += pad + "( x: ";
+    s += to_string(p.first, pad+"  ") + "\n";
+    s += pad + "( y: ";
+    s += to_string(p.second, pad+"  ") + "\n";
 
     return s;
 }
@@ -74,9 +81,9 @@ template<typename T>
 string to_string(const vector<T> &v, string pad) {
     string s = "\n";
     for (size_t i = 0; i < v.size(); i++) {
-        s += pad + "  | ";
+        s += pad + "| ";
         s += to_string(i) + ": ";
-        s += to_string(v[i], pad+"    ") + "\n";
+        s += to_string(v[i], pad+"  ") + "\n";
     }
     return s;
 }
@@ -85,9 +92,9 @@ template<typename T, size_t N>
 string to_string(const array<T, N> &v, string pad) {
     string s = "\n";
     for (size_t i = 0; i < v.size(); i++) {
-        s += pad + "  | ";
+        s += pad + "| ";
         s += to_string(i) + ": ";
-        s += to_string(v[i], pad+"    ") + "\n";
+        s += to_string(v[i], pad+"  ") + "\n";
     }
     return s;
 }
@@ -116,29 +123,41 @@ string to_string(T *v, const size_t n, const size_t m) {
 
 template<typename T>
 string to_string(const set<T> &v, string pad) {
-    string s = ""; string pad0 = "";
-    if (use_pad<T>) pad0 = "\n" + pad;
-
-    s += pad0 + "{ ";
-    for (T &x: v) {
-        s += to_string(x, pad+"  ");
-        s += pad0 + " ";
+    if (!use_pad<set<T> >) {
+        string s = "{";
+        for (const T &x: v) {
+            s += " " + to_string(x) + ",";
+        }
+        s += " }";
+        return s;
     }
-    s += "}";
+
+    string s = "\n";
+
+    for (const T &x: v) {
+        s += pad + "{ ";
+        s += to_string(x, pad+"  ") + "\n";
+    }
     return s;
 }
 
 template<typename T>
 string to_string(const unordered_set<T> &v, string pad) {
-    string s = ""; string pad0 = "";
-    if (use_pad<T>) pad0 = "\n" + pad;
-
-    s += pad0 + "{ ";
-    for (T &x: v) {
-        s += to_string(x, pad+"  ");
-        s += pad0 + " ";
+    if (!use_pad<set<T> >) {
+        string s = "{";
+        for (const T &x: v) {
+            s += " " + to_string(x) + ",";
+        }
+        s += " }";
+        return s;
     }
-    s += "}";
+
+    string s = "\n";
+
+    for (const T &x: v) {
+        s += pad + "{ ";
+        s += to_string(x, pad+"  ") + "\n";
+    }
     return s;
 }
 
@@ -150,8 +169,8 @@ template<
 string to_string(const map<Key, T, Compare, Allocator> &v, string pad) {
     string s = "\n";
     for (auto &[k,val]: v) {
-        s += pad + "  { ";
-        s += to_string(k, pad+"    ") + ": " + to_string(val, pad+"    ") + "\n";
+        s += pad + "{ ";
+        s += to_string(k, pad+"  ") + ": " + to_string(val, pad+"  ") + "\n";
     }
     return s;
 }
@@ -165,8 +184,8 @@ template<
 string to_string(const unordered_map<Key, T, KeyEqual, Allocator> &v, string pad) {
     string s = "\n";
     for (auto &[k,val]: v) {
-        s += pad + "  { ";
-        s += to_string(k, pad+"    ") + ": " + to_string(val, pad+"    ") + "\n";
+        s += pad + "{ ";
+        s += to_string(k, pad+"  ") + ": " + to_string(val, pad+"  ") + "\n";
     }
     return s;
 }
