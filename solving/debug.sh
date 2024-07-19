@@ -6,7 +6,7 @@ cyan=$(tput setaf 6)
 white=$(tput setaf 7)
 
 echo -e "${cyan}<-- Compiling... -->${white}"
-g++ -std=c++14 -D __DEBUG__ -o problems/a.out "problems/$1.cpp"
+g++ -std=c++17 -D __DEBUG__ "problems/$1.cpp" -o problems/a.out
 
 if [ $? -eq 0 ]; then
     echo -e "${green}<-- COMPILATION SUCCESSFUL -->${white}"

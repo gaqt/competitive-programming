@@ -39,10 +39,14 @@ typedef uint64_t ull;
 typedef long double ld;
 typedef pair<ll,ll> pii;
 typedef pair<ld,ld> pdd;
+#define hashmap unordered_map;
+#define hashset unordered_set;
 #define x first
 #define y second
-#define pb push_back
-#define ppb pop_back
+#define pushb push_back
+#define pushf push_front
+#define popb pop_back
+#define popf pop_front
 #define ins insert
 #define bg begin
 #define all(a) begin(a), end(a)
@@ -65,12 +69,23 @@ typedef pair<ld,ld> pdd;
 #define bcheck(a,b) (!!((a)&(1ull<<(b))))
 void yes() {cout << "YES" << "\n";}
 void no() {cout << "NO" << "\n";}
+#define newl "\n"
 __attribute__ ((const)) ld diste(const pdd a,const pdd b) {return sqrt(pow(a.x-b.x,2)+pow(a.y-b.y,2));}
 __attribute__ ((const)) ld distm(const pdd a,const pdd b) {return abs(a.x-b.x)+abs(a.y-b.y);}
 __attribute__ ((const)) ld diste(const pii a,const pii b) {return sqrt(pow(a.x-b.x,2)+pow(a.y-b.y,2));}
 __attribute__ ((const)) ll distm(const pii a,const pii b) {return abs(a.x-b.x)+abs(a.y-b.y);}
-template<typename T> __attribute__ ((const)) T gcd(const T a,const T b){return(b?__gcd(a,b):a);}
-template<typename T> __attribute__ ((const)) T lcm(const T a,const T b){return(a*(b/gcd(a,b)));}
+template<typename T> __attribute__ ((const)) T _gcd_internal(const T a, const T b) {
+    if (b == 0) return a;
+    return _gcd_internal(b, a%b);
+}
+template<typename T> __attribute__ ((const)) T gcd(const T a, const T b) {
+    if (a > b) return _gcd_internal(a,b);
+    if (a < b) return _gcd_internal(b,a);
+    return a;
+}
+template<typename T> __attribute__ ((const)) T lcm(const T a, const T b) {
+    return a * (b/gcd(a,b));
+}
 void extended_gcd(ll a, ll b, ll* x, ll* y) {
     if (a == 0) {
         *x = 0;
@@ -118,9 +133,10 @@ __attribute__ ((pure)) ll ipow(ll b, ll e) {
     }
     return r;
 }
-__attribute__ ((const)) pair<vector<int>, vector<bool> > get_primes(const ll n) {
+template<typename T>
+__attribute__ ((const)) pair<vector<T>, vector<bool> > get_primes(const ll n) {
     vector<bool> sieve(n+1, true);
-    vector<int> primes;
+    vector<T> primes;
     primes.reserve(1.1l*n/log((ld)n));
     sieve[0] = false;
     sieve[1] = false;
@@ -132,14 +148,15 @@ __attribute__ ((const)) pair<vector<int>, vector<bool> > get_primes(const ll n) 
     }
     return make_pair(primes, sieve);
 }
-__attribute__ ((const)) vector<int> prime_dcmp(const ll x, const vector<int> &primes) {
-    vector<int> dcmp;
-    int max_p = 1+sqrt(x);
-    for (int p: primes) {
+template<typename T>
+__attribute__ ((const)) multiset<T> prime_fact(const ll x, const vector<T> &primes) {
+    multiset<T> fact;
+    ll max_p = 1+sqrt(x);
+    for (T p: primes) {
         if (p >= max_p) break;
-        if (x % p == 0) dcmp.push_back(p);
+        if (x % p == 0) fact.insert(p);
     }
-    return dcmp;
+    return fact;
 }
 template<class T, class Compare = less_equal<T> >
 int inversions(T arr[], const int l, const int r) {
@@ -179,6 +196,8 @@ int inversions(T arr[], const int l, const int r) {
 //----------------------------------------------------------------------------------
 
 /* <--- Notes --->
+
+
 
 */
 
