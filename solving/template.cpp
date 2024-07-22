@@ -154,7 +154,10 @@ __attribute__ ((const)) multiset<T> prime_fact(const ll x, const vector<T> &prim
     ll max_p = 1+sqrt(x);
     for (T p: primes) {
         if (p >= max_p) break;
-        if (x % p == 0) fact.insert(p);
+        if (x % p == 0) {
+            fact.insert(p);
+            if (x/p >= max_p) fact.merge(prime_fact(x/p, primes));
+        }
     }
     return fact;
 }
