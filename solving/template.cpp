@@ -39,8 +39,8 @@ typedef uint64_t ull;
 typedef long double ld;
 typedef pair<ll,ll> pii;
 typedef pair<ld,ld> pdd;
-#define hashmap unordered_map;
-#define hashset unordered_set;
+#define hashmap unordered_map
+#define hashset unordered_set
 #define x first
 #define y second
 #define pushb push_back
