@@ -1,7 +1,6 @@
 // author: logemi
 // github.com/atomoxetine
 
-#include <cassert>
 #pragma GCC diagnostic ignored "-Wc++11-extensions"
 #pragma GCC diagnostic ignored "-Wc++17-extensions"
 #ifdef __DEBUG__
@@ -54,7 +53,7 @@ void yes() { cout << "YES" << "\n"; }
 void no() { cout << "NO" << "\n"; }
 #define newl "\n"
 /// wraps value between vmin and vmax
-template <typename T> constexpr T wrap(T value, const T vmin, const T vmax) {
+template <typename T> T wrap(T value, const T vmin, const T vmax) {
 #define DIFF (vmax - vmin)
     if (value < vmin)
         value += DIFF * (T)ceil((ld)(vmin - value) / (ld)DIFF);
@@ -64,74 +63,74 @@ template <typename T> constexpr T wrap(T value, const T vmin, const T vmax) {
     return value;
 }
 template <typename T>
-constexpr bool in_range(const T value, const T vmin, const T vmax) {
+bool in_range(const T value, const T vmin, const T vmax) {
     return vmin < value && value < vmax;
 }
-constexpr bool float_eq(const ld a, const ld b) {
+bool float_eq(const ld a, const ld b) {
     return in_range(a, b - FLOAT_THRESHOLD, b + FLOAT_THRESHOLD);
 }
 struct vec2 {
     ld x;
     ld y;
-    constexpr ld angle() const { return atan2((ld)y, (ld)x); }
-    constexpr ld magnitude() const { return this->diste({0, 0}); }
-    static constexpr vec2 from_polar(pdd polar) {
+    ld angle() const { return atan2((ld)y, (ld)x); }
+    ld magnitude() const { return this->diste({0, 0}); }
+    static vec2 from_polar(pdd polar) {
         return {.x = polar.y * cos(polar.x), .y = polar.y * sin(polar.x)};
     }
-    constexpr pdd to_polar() const { return make_pair(angle(), magnitude()); }
+    pdd to_polar() const { return make_pair(angle(), magnitude()); }
     /// euclidean distance squared
-    constexpr ld diste2(const vec2 other) const {
+    ld diste2(const vec2 other) const {
         return pow(x - other.x, 2) + pow(y - other.y, 2);
     }
     /// euclidean distance
-    constexpr ld diste(const vec2 other) const { return sqrt(diste2(other)); }
+    ld diste(const vec2 other) const { return sqrt(diste2(other)); }
     /// manhattan distance
-    constexpr ld distm(const vec2 other) const {
+    ld distm(const vec2 other) const {
         return abs(x - other.x) + abs(y - other.y);
     }
-    constexpr vec2 scale(const ld factor) const {
+    vec2 scale(const ld factor) const {
         return {.x = x * factor, .y = y * factor};
     }
-    constexpr vec2 rotate(const ld angle) const {
+    vec2 rotate(const ld angle) const {
         pdd polar = to_polar();
         polar.first = wrap(polar.first + angle, 0.0l, PI * 2.0l);
         return from_polar(polar);
     }
-    constexpr vec2 add(const vec2 other) const {
+    vec2 add(const vec2 other) const {
         return {.x = x + other.x, .y = y + other.y};
     }
-    constexpr vec2 sub(const vec2 other) const {
+    vec2 sub(const vec2 other) const {
         return {.x = x - other.x, .y = y - other.y};
     }
-    constexpr vec2 operator+(const vec2 other) const { return add(other); }
-    constexpr vec2 operator-(const vec2 other) const { return sub(other); }
-    constexpr bool operator==(const vec2 other) const {
+    vec2 operator+(const vec2 other) const { return add(other); }
+    vec2 operator-(const vec2 other) const { return sub(other); }
+    bool operator==(const vec2 other) const {
         return float_eq(x, other.x) && float_eq(y, other.y);
     }
-    constexpr bool operator<(const vec2 other) const {
+    bool operator<(const vec2 other) const {
         return x < other.x ? true : float_eq(x, other.x) ? y < other.y : false;
     }
-    constexpr bool operator>(const vec2 other) const {
+    bool operator>(const vec2 other) const {
         return x > other.x ? true : float_eq(x, other.x) ? y > other.y : false;
     }
 };
 /// manhattan distance (integers)
-constexpr ll distmi(const pii a, const pii b) {
+ll distmi(const pii a, const pii b) {
     return abs(a.x - b.x) + abs(a.y - b.y);
 }
 /// euclidean distance squared (integers)
-constexpr ll diste2i(const pii a, const pii b) {
+ll diste2i(const pii a, const pii b) {
     return pow(a.x - b.x, 2) + pow(a.y - b.y, 2);
 }
 /// euclidean distance (integers)
-constexpr ld distei(const pii a, const pii b) { return sqrt(diste2i(a, b)); }
-template <typename T> constexpr T _gcd_internal(const T a, const T b) {
+ld distei(const pii a, const pii b) { return sqrt(diste2i(a, b)); }
+template <typename T> T _gcd_internal(const T a, const T b) {
     if (b == 0)
         return a;
     return _gcd_internal(b, a % b);
 }
 /// greatest common divisor of a and b
-template <typename T> constexpr T gcd(const T a, const T b) {
+template <typename T> T gcd(const T a, const T b) {
     if (a > b)
         return _gcd_internal(a, b);
     if (a < b)
@@ -139,7 +138,7 @@ template <typename T> constexpr T gcd(const T a, const T b) {
     return a;
 }
 /// least common multiple of a and b
-template <typename T> constexpr T lcm(const T a, const T b) {
+template <typename T> T lcm(const T a, const T b) {
     return a * (b / gcd(a, b));
 }
 void extended_gcd(ll a, ll b, ll *x, ll *y) {
@@ -183,7 +182,7 @@ __attribute__((const)) const array<array<ll, 63>, 20> gen_ipow() {
 }
 static const array<array<ll, 63>, 20> _ipow = gen_ipow();
 /// fast integer exponentiation
-constexpr ll ipow(ll b, ll e) {
+ll ipow(ll b, ll e) {
     if (b < _ipow.size())
         return _ipow[b][e];
     ll r = 1;
@@ -217,7 +216,7 @@ __attribute__((const)) pair<vector<T>, vector<bool>> get_primes(const ll n) {
 }
 /// returns true if x is prime
 template <typename T>
-constexpr bool is_prime(const ll x, const vector<T> &primes,
+bool is_prime(const ll x, const vector<T> &primes,
                         const vector<bool> &sieve) {
 
     if (x < sieve.size())
@@ -235,7 +234,7 @@ constexpr bool is_prime(const ll x, const vector<T> &primes,
 }
 /// returns prime factorization of x
 template <typename T>
-constexpr multiset<T> prime_fact(ll x, const vector<T> &primes,
+multiset<T> prime_fact(ll x, const vector<T> &primes,
                                  const vector<bool> &sieve) {
     multiset<T> fact;
     ll max_p = 1 + sqrt(x);
@@ -257,7 +256,7 @@ constexpr multiset<T> prime_fact(ll x, const vector<T> &primes,
 }
 /// counts number of inversions in T array
 template <class T, class Compare = less_equal<T>>
-constexpr int inversions(T arr[], const int l, const int r) {
+int inversions(T arr[], const int l, const int r) {
     if (l == r - 1)
         return 0;
     int inv = 0, mid = (l + r) / 2;
