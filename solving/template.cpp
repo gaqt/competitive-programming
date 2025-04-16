@@ -1,5 +1,5 @@
-// author: logemi
-// github.com/atomoxetine
+// author: gaqt (logemi on codeforces)
+// https://github.com/gaqt/competitive-programming
 
 #pragma GCC diagnostic ignored "-Wc++11-extensions"
 #pragma GCC diagnostic ignored "-Wc++17-extensions"
