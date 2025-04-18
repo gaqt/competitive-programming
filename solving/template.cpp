@@ -15,7 +15,10 @@
 #define debugarr(x, n) ;
 #endif
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
+using namespace __gnu_pbds;
 typedef int64_t ll;
 typedef uint64_t ull;
 typedef long double ld;
@@ -291,6 +294,9 @@ int inversions(T arr[], const int l, const int r) {
     }
     return inv;
 }
+
+#define POLICY_MAP(Key, Mapped, Cmp) tree<Key, Mapped, Cmp, rb_tree_tag, tree_order_statistics_node_update>
+#define POLICY_SET(Key, Cmp) POLICY_MAP(Key, null_type, Cmp)
 
 //     SOLUTION GOES HERE
 //----------------------------------------------------------------------------------
