@@ -1,0 +1,5 @@
+
+[*.{h,c,hpp,cpp}]
+end_of_line = lf
+indent_size = 3
+indent_style = space
