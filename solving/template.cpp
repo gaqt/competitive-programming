@@ -40,7 +40,7 @@ inline void no() { cout << "NO" << "\n"; }
    tree<Key, Mapped, Cmp, rb_tree_tag, tree_order_statistics_node_update>
 #define POLICY_SET(Key, Cmp) POLICY_MAP(Key, null_type, Cmp)
 /// wraps value between vmin and vmax (float)
-__attribute__((const)) ld wrapf(ld value, const ld vmin, const ld vmax) {
+constexpr inline ld wrapf(ld value, const ld vmin, const ld vmax) {
 #define _DIFF (vmax - vmin)
    if (value < vmin)
       value += _DIFF * ceil((ld)(vmin - value) / (ld)_DIFF);
@@ -50,7 +50,7 @@ __attribute__((const)) ld wrapf(ld value, const ld vmin, const ld vmax) {
    return value;
 }
 /// wraps value between vmin and vmax (integer)
-__attribute__((const)) ll wrapi(ll value, const ll vmin, const ll vmax) {
+constexpr inline ll wrapi(ll value, const ll vmin, const ll vmax) {
 #define _DIFF (vmax - vmin)
    if (value < vmin)
       value = vmin + (vmin - value) % _DIFF;
@@ -60,31 +60,32 @@ __attribute__((const)) ll wrapi(ll value, const ll vmin, const ll vmax) {
    return value;
 }
 template <typename T>
-__attribute__((const)) inline bool inRange(const T value, const T vmin,
-                                           const T vmax) {
+constexpr inline bool inRange(const T value, const T vmin, const T vmax) {
    return vmin <= value && value <= vmax;
 }
+/// integer absolute value
+constexpr inline ll absi(const ll x) { return x < 0 ? -x : x; }
 /// manhattan distance (integers)
-__attribute__((const)) inline ll distmi(const pii a, const pii b) {
-   return abs(a.x - b.x) + abs(a.y - b.y);
+constexpr inline ll distmi(const pii a, const pii b) {
+   return absi(a.x - b.x) + absi(a.y - b.y);
 }
 /// euclidean distance squared (integers)
-__attribute__((const)) inline ll diste2i(const pii a, const pii b) {
+constexpr inline ll diste2i(const pii a, const pii b) {
 #define _DIFFX (a.x - b.x)
 #define _DIFFY (a.y - b.y)
    return _DIFFX * _DIFFX + _DIFFY * _DIFFY;
 }
 /// euclidean distance (integers)
-__attribute__((const)) inline ld distei(const pii a, const pii b) {
+constexpr inline ld distei(const pii a, const pii b) {
    return sqrt(diste2i(a, b));
 }
-__attribute__((const)) ll _gcd_internal(const ll a, const ll b) {
+constexpr ll _gcd_internal(const ll a, const ll b) {
    if (b == 0)
       return a;
    return _gcd_internal(b, a % b);
 }
 /// greatest common divisor of a and b
-__attribute__((const)) ll gcd(const ll a, const ll b) {
+constexpr inline ll gcd(const ll a, const ll b) {
    if (a > b)
       return _gcd_internal(a, b);
    if (a < b)
@@ -92,9 +93,7 @@ __attribute__((const)) ll gcd(const ll a, const ll b) {
    return a;
 }
 /// least common multiple of a and b
-__attribute__((const)) inline ll lcm(const ll a, const ll b) {
-   return a * (b / gcd(a, b));
-}
+constexpr inline ll lcm(const ll a, const ll b) { return a * (b / gcd(a, b)); }
 void extended_gcd(ll a, ll b, ll *x, ll *y) {
    if (a == 0) {
       *x = 0;
@@ -118,7 +117,7 @@ __attribute__((const)) ll modInv(const ll a, const ll m) {
    }
 }
 /// fast integer exponentiation
-ll ipow(ll b, ll e) {
+__attribute__((pure)) ll ipow(ll b, ll e) {
    switch (b) {
    case 0:
    case 1:
@@ -248,25 +247,23 @@ char readChar() {
    return c;
 }
 /// Reads ints from stdin
-vector<ll> readInts(ll n) {
-   vector<ll> ints;
-   ints.resize(n);
+vector<ll> readInts(const ll n) {
+   vector<ll> ints(n);
    for (ll i = 0; i < n; i++)
       cin >> ints[i];
 
    return ints;
 }
 /// Read ints from stdin (one indexed)
-vector<ll> readIntsOne(ll n) {
-   vector<ll> ints;
-   ints.resize(n + 1);
+vector<ll> readIntsOne(const ll n) {
+   vector<ll> ints(n + 1);
    for (ll i = 1; i <= n; i++)
       cin >> ints[i];
 
    return ints;
 }
 /// Reads int pairs from stdin
-vector<pii> readPairs(ll n) {
+vector<pii> readPairs(const ll n) {
    vector<pii> pairs;
    pairs.resize(n);
    for (ll i = 0; i < n; i++) {
@@ -277,7 +274,7 @@ vector<pii> readPairs(ll n) {
    return pairs;
 }
 /// Reads int pairs from stdin (one indexed)
-vector<pii> readPairsOne(ll n) {
+vector<pii> readPairsOne(const ll n) {
    vector<pii> pairs;
    pairs.resize(n + 1);
    for (ll i = 1; i <= n; i++) {
@@ -291,13 +288,13 @@ vector<char> _outbuf(1024);
 /// Formatting print using ostreams
 #define printf(format, ...)                                                    \
    {                                                                           \
-      size_t bytes =                                                           \
+      size_t _bytes =                                                          \
           snprintf(_outbuf.data(), _outbuf.size(), format, __VA_ARGS__);       \
-      if (bytes >= _outbuf.size()) {                                           \
-         _outbuf.resize(2 * bytes);                                            \
+      if (_bytes >= _outbuf.size()) {                                          \
+         _outbuf.resize(2 * _bytes);                                           \
          sprintf(_outbuf.data(), format, __VA_ARGS__);                         \
       }                                                                        \
-      cout.write(_outbuf.data(), bytes);                                       \
+      cout.write(_outbuf.data(), _bytes);                                      \
    }
 
 //     SOLUTION GOES HERE
@@ -309,15 +306,14 @@ vector<char> _outbuf(1024);
 
 */
 
-inline void _preprocess() {
-
-}
+inline void _preprocess() {}
 
 inline void _solve() {
-
+   ll n = readInt();
+   vector<ll> a = readInts(n);
 }
 
-// #define USE_TEST_CASES
+#define USE_TEST_CASES
 // #define INTERACTIVE
 
 int main(void) {
